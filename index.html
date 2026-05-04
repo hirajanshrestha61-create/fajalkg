@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buy Ronaldo a World Cup Trophy 🏆</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Anton&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #FFD700;
+    --gold-dark: #C8A800;
+    --green: #1a7a2e;
+    --green-bright: #28a745;
+    --bg: #f5f5f0;
+    --text: #111;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+  }
+
+  /* MAIN PAGE */
+  #main-page {
+    width: 100%;
+    max-width: 480px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px 40px;
+    gap: 0;
+    transition: opacity 0.3s;
+  }
+
+  .headline {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(2.2rem, 9vw, 3.2rem);
+    line-height: 1.1;
+    text-align: center;
+    color: var(--text);
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+  }
+
+  .trophy-img-wrap {
+    width: 90%;
+    max-width: 360px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(200,168,0,0.25);
+    margin-bottom: 28px;
+    position: relative;
+  }
+
+  .trophy-img-wrap img {
+    width: 100%;
+    display: block;
+  }
+
+  .price-tag {
+    background: linear-gradient(135deg, var(--gold), #ffe066);
+    color: #111;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 2px;
+    padding: 10px 32px;
+    border-radius: 40px;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 16px rgba(200,168,0,0.35);
+    border: 2px solid var(--gold-dark);
+  }
+
+  .btn-buy {
+    background: var(--green-bright);
+    color: #fff;
+    font-family: 'Anton', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    padding: 18px 52px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 6px 24px rgba(40,167,69,0.35);
+    transition: transform 0.12s, box-shadow 0.12s, background 0.12s;
+    outline: none;
+    text-transform: uppercase;
+  }
+
+  .btn-buy:hover {
+    background: #22923a;
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 10px 32px rgba(40,167,69,0.45);
+  }
+
+  .btn-buy:active {
+    transform: scale(0.97);
+  }
+
+  .cart-icon { font-size: 1.5rem; }
+
+  /* MODAL OVERLAY */
+  #modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0,0,0,0.82);
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.25s ease;
+  }
+
+  #modal.active { display: flex; }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal-box {
+    background: #fff;
+    border-radius: 20px;
+    width: min(94vw, 520px);
+    max-height: 92vh;
+    overflow-y: auto;
+    padding: 0 0 28px 0;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.5);
+    animation: slideUp 0.3s cubic-bezier(.22,1,.36,1);
+    position: relative;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(60px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .modal-img-wrap {
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .modal-img-wrap img {
+    width: 100%;
+    display: block;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: rgba(0,0,0,0.55);
+    border: none;
+    color: #fff;
+    font-size: 1.4rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: background 0.15s;
+  }
+  .close-btn:hover { background: rgba(0,0,0,0.8); }
+
+  .modal-body {
+    padding: 20px 24px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .modal-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.7rem;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .modal-desc {
+    font-size: 1rem;
+    color: #444;
+    line-height: 1.5;
+    max-width: 380px;
+  }
+
+  .share-label {
+    font-family: 'Anton', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 1.5px;
+    color: #888;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .share-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  .share-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.12s, filter 0.12s;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .share-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+  }
+
+  .share-btn.twitter { background: #000; }
+  .share-btn.facebook { background: #1877f2; }
+  .share-btn.whatsapp { background: #25d366; }
+  .share-btn.instagram { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+  .share-btn.copy { background: #555; }
+  .share-btn.copy.copied { background: var(--green-bright); }
+
+  .share-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+  .divider {
+    width: 60%;
+    border: none;
+    border-top: 1.5px solid #eee;
+    margin: 4px 0;
+  }
+
+  .cr7-tribute {
+    font-size: 0.9rem;
+    color: #aaa;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<!-- MAIN PAGE -->
+<div id="main-page">
+  <h1 class="headline">Ronaldo couldn't win World Cup,<br>please buy him<br>World Cup Trophy</h1>
+
+  <div class="trophy-img-wrap">
+    <img src="/mnt/user-data/uploads/file_000000004f287207a578e7979a86226d.png" alt="FIFA World Cup Trophy" onerror="this.src='https://upload.wikimedia.org/wikipedia/en/thumb/d/d6/FIFA_World_Cup_Trophy.jpg/220px-FIFA_World_Cup_Trophy.jpg'">
+  </div>
+
+  <div class="price-tag">💰 PRICE: $10,000,000</div>
+
+  <button class="btn-buy" onclick="openModal()">
+    <span class="cart-icon">🛒</span> BUY HIM
+  </button>
+</div>
+
+<!-- MODAL -->
+<div id="modal">
+  <div class="modal-box">
+    <div class="modal-img-wrap">
+      <button class="close-btn" onclick="closeModal()" aria-label="Close">✕</button>
+      <img src="/mnt/user-data/uploads/file_000000004ccc71fabdbab49c10288cb5.png" alt="Ronaldo receiving trophy" onerror="this.src='https://i.imgur.com/placeholder.jpg'">
+    </div>
+    <div class="modal-body">
+      <div class="modal-title">🎉 You made CR7 cry happy tears!</div>
+      <p class="modal-desc">You just bought Ronaldo a World Cup Trophy for <strong>$10,000,000</strong>. He said <strong>"THANK YOU ❤️"</strong> — share this legendary moment with the world!</p>
+      <hr class="divider">
+      <div class="share-label">📣 Share this legend</div>
+      <div class="share-buttons">
+
+        <!-- Twitter/X -->
+        <a class="share-btn twitter" href="#" onclick="shareTwitter(); return false;">
+          <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.632L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          Twitter / X
+        </a>
+
+        <!-- Facebook -->
+        <a class="share-btn facebook" href="#" onclick="shareFacebook(); return false;">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          Facebook
+        </a>
+
+        <!-- WhatsApp -->
+        <a class="share-btn whatsapp" href="#" onclick="shareWhatsApp(); return false;">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </a>
+
+        <!-- Copy Link -->
+        <button class="share-btn copy" id="copyBtn" onclick="copyLink()">
+          <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          Copy Link
+        </button>
+
+      </div>
+      <p class="cr7-tribute">🐐 CR7 — Greatest of All Time, with or without the cup.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const shareText = "😭 Ronaldo couldn't win the World Cup, so I bought him a trophy for $10,000,000! THANK YOU CR7 🏆❤️";
+  const shareUrl = window.location.href;
+
+  function openModal() {
+    const modal = document.getElementById('modal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('modal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  function shareTwitter() {
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
+  }
+
+  function shareFacebook() {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`, '_blank');
+  }
+
+  function shareWhatsApp() {
+    window.open(`https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`, '_blank');
+  }
+
+  function copyLink() {
+    const text = shareText + ' ' + shareUrl;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.classList.add('copied');
+      btn.innerHTML = `<svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Copied!`;
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = `<svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg> Copy Link`;
+      }, 2500);
+    });
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
